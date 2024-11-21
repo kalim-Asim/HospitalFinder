@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctors List</title>
+  <link rel="stylesheet" href="admin-dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+/* General Dark Mode Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #1c1b2e;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.main-content {
+  width: 100%;
+  padding: 20px;
+  background: #252440;
+  color: #e0e0e0;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #c084fc;
+}
+
+/* Grid Layout */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-items: center;
+}
+
+/* Card Styles */
+.card {
+  background: #373159;
+  color: #e0e0e0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center; /* Center-align text */
+  width: 100%;
+  max-width: 320px; /* Limit card width for better alignment */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.card i {
+  font-size: 40px;
+  margin-bottom: 10px;
+  color: #c084fc;
+}
+
+.card h3 {
+  font-size: 20px; /* Slightly larger font size */
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.card p {
+  font-size: 16px; /* Slightly larger font size */
+  margin: 5px 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+
+  </style>
+</head>
+<body>
+  <div class="min-h-screen flex">
+    <!-- Sidebar -->
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <h2>All Doctors</h2>
+      <div class="grid" id="doctorsGrid">
+        <!-- Doctor cards will be inserted here by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Fetch doctors and display them in the grid
+    async function fetchDoctors() {
+      try {
+        const response = await fetch('http://localhost:3001/api/doctors');
+        const doctors = await response.json();
+
+        const doctorsGrid = document.getElementById('doctorsGrid');
+        doctors.forEach(doctor => {
+          const doctorCard = document.createElement('div');
+          doctorCard.classList.add('card');
+          doctorCard.innerHTML = `
+            <i class="fa fa-user-md"></i>
+            <div>
+              <h3>${doctor.name}</h3>
+              <p>Speciality: ${doctor.speciality}</p>
+              <p>Experience: ${doctor.experience} years</p>
+              <p>Email: ${doctor.email}</p>
+              <p>Contact No: ${doctor.phone}</p>
+            </div>
+          `;
+          doctorsGrid.appendChild(doctorCard);
+        });
+      } catch (error) {
+        console.error('Error fetching doctors:', error);
+      }
+    }
+
+    // Call the function to fetch and display doctors
+    fetchDoctors();
+  </script>
+</body>
+</html>
