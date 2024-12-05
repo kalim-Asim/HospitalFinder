@@ -18,7 +18,11 @@ Hospital Finder is a web application that helps users locate hospitals, book app
 - **Frontend**: Handlebars and CSS
 - **Database**: MongoDB
 - **Maps Integration**: (Specify the service used, e.g., Google Maps API)
-
+## 🗂 Neccessary Id to run
+- **Admin**: - email: admin123@gmail.com
+             - password: admin123
+- **User**: - create your id for login then use it
+  
 ## 🗂 Project Structure
 
 ```plaintext
