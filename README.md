@@ -1,5 +1,5 @@
 # Hospital Finder 🏥
-
+Project made by our group in Software Engineering course
 [![Repository](https://img.shields.io/badge/GitHub-HospitalFinder-blue?style=flat-square)](https://github.com/kalim-Asim/HospitalFinder)
 
 Hospital Finder is a web application that helps users locate hospitals, book appointments, schedule lab tests, and receive timely notifications and reminders, all from one convenient platform.
