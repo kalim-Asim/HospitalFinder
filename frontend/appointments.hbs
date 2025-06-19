@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointments List</title>
+  <link rel="stylesheet" href="admin-dashboard.css">
+  <link rel="icon" href="logo.jpg" type="image/jpg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    /* General Dark Mode Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #1c1b2e;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.main-content {
+  width: 100%;
+  padding: 20px;
+  background: #252440;
+  color: #e0e0e0;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #c084fc;
+  font-size: 28px; /* Increased font size for the header */
+}
+
+/* Grid Layout for Two Cards in One Row */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two cards per row */
+  gap: 20px;
+  justify-items: center;
+}
+
+/* Card Styles */
+.card {
+  background: #373159;
+  color: #e0e0e0;
+  padding: 25px; /* Increased padding */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center; /* Center-align text */
+  width: 100%;
+  max-width: 400px; /* Increased max width */
+  height: 300px; /* Increased height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.card i {
+  font-size: 50px; /* Increased icon size */
+  margin-bottom: 15px; /* Increased margin for better spacing */
+  color: #c084fc;
+}
+
+.card h3 {
+  font-size: 24px; /* Increased font size for heading */
+  font-weight: bold;
+  margin-bottom: 12px; /* Increased margin for better spacing */
+}
+
+.card p {
+  font-size: 18px; /* Increased font size for paragraph */
+  margin: 8px 0; /* Increased margin for better spacing */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(1, 1fr); /* One card per row on smaller screens */
+  }
+}
+
+    /* General Dark Mode Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1c1b2e;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .min-h-screen {
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .main-content {
+      width: 100%;
+      padding: 20px;
+      background: #252440;
+      color: #e0e0e0;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #c084fc;
+    }
+
+    /* Grid Layout for Two Cards in One Row */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* Two cards per row */
+      gap: 20px;
+      justify-items: center;
+    }
+
+    /* Card Styles */
+    .card {
+      background: #373159;
+      color: #e0e0e0;
+      padding: 25px; /* Increased padding */
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center; /* Center-align text */
+      width: 100%;
+      max-width: 400px; /* Increased max width */
+      height: 300px; /* Increased height */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .card i {
+      font-size: 40px;
+      margin-bottom: 10px;
+      color: #c084fc;
+    }
+
+    .card h3 {
+      font-size: 22px; /* Larger font size */
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 16px; /* Larger font size */
+      margin: 5px 0;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      .grid {
+        grid-template-columns: repeat(1, 1fr); /* One card per row on smaller screens */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen flex">
+    <!-- Sidebar -->
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <h2>All Appointments</h2>
+      <div class="grid" id="appointmentsGrid">
+        <!-- Appointment cards will be inserted here by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Fetch appointments and display them in the grid
+    async function fetchAppointments() {
+      try {
+        const response = await fetch('http://localhost:3000/api/appointments');
+        const appointments = await response.json();
+
+        const appointmentsGrid = document.getElementById('appointmentsGrid');
+        appointments.forEach(appointment => {
+          const appointmentCard = document.createElement('div');
+          appointmentCard.classList.add('card');
+          appointmentCard.innerHTML = `
+            <i class="fa fa-calendar-check"></i>
+            <div>
+              <h3>${appointment.name}</h3>
+              <p>Doctor: ${appointment.doctor}</p>
+              <p>Appointment Date: ${new Date(appointment.appointmentDate).toLocaleDateString()}</p>
+              <p>Appointment Time: ${appointment.appointmentTime}</p>
+              <p>Email: ${appointment.email}</p>
+              <p>Phone: ${appointment.phone}</p>
+              <p>Notes: ${appointment.notes || 'No additional notes'}</p>
+            </div>
+          `;
+          appointmentsGrid.appendChild(appointmentCard);
+        });
+      } catch (error) {
+        console.error('Error fetching appointments:', error);
+      }
+    }
+
+    // Call the function to fetch and display appointments
+    fetchAppointments();
+  </script>
+</body>
+</html>

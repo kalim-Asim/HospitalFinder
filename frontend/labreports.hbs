@@ -1,0 +1,100 @@
+<!-- File: views/labreports.hbs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Reports</title>
+  <link rel="icon" href="logo.jpg" type="image/jpg">
+  <style>
+    /* General Dark Mode Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #1c1b2e;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 20px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+h1 {
+  color: #c084fc;
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+/* Report List Styles */
+.report-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 20px 0;
+  display: grid;
+  gap: 20px;
+}
+
+.report-list li {
+  background: #373159;
+  color: #e0e0e0;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.report-list li:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.report-list h4 {
+  color: #c084fc;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.report-list p {
+  color: #e0e0e0;
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+.report-list a {
+  color: #c084fc;
+  text-decoration: none;
+}
+
+.report-list a:hover {
+  text-decoration: underline;
+}
+
+/* No Reports Message */
+.no-reports {
+  text-align: center;
+  color: #888;
+  font-size: 18px;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Lab Reports</h1>
+
+  {{#if reports.length}}
+    <ul class="report-list">
+      {{#each reports}}
+        <li>
+          <h4>{{reportName}}</h4>
+          <p><strong>Patient Name:</strong> {{patientName}}</p>
+          <p><strong>Age:</strong> {{patientAge}}</p>
+          <p><strong>Gender:</strong> {{patientGender}}</p>
+          <p><strong>Date:</strong> {{uploadDate}}</p>
+        </li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <p class="no-reports">No reports found for this user.</p>
+  {{/if}}
+</body>
+</html>

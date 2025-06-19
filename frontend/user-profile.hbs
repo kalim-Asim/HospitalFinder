@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="icon" href="favicon.png" type="image/jpg">
+   <style>
+        /* Dark Mode Styles for Admin Dashboard */
+body {
+    background-color: #1c1b2e; /* Dark background with a purple/black tint */
+    color: #e0e0e0; /* Light text color */
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    color: #e0e0e0; /* Consistent text color for headings and paragraphs */
+    transition: color 0.3s;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #2a273b; /* Darker slate/navy for the sidebar */
+    color: #e0e0e0;
+    padding: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #60a5fa; /* Lighter blue for the sidebar title */
+    margin-bottom: 20px;
+}
+
+.sidebar .menu-item {
+    color: #e0e0e0;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.sidebar .menu-item:hover {
+    color: #60a5fa; /* Light blue hover effect */
+    transform: translateX(5px);
+}
+
+/* Profile, Stats, and Activity Section */
+.profile-section, .stats-section, .activity-health, .appointments-section {
+    background-color: #252440; /* Darker blue background for sections */
+    color: #e0e0e0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Buttons in Profile and Stats Section */
+.buttons-container button {
+    background-color: #3b82f6; /* Bright blue for button background */
+    color: #ffffff; /* White text color for contrast */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.buttons-container button:hover {
+    background-color: #2563eb; /* Slightly darker blue on hover */
+}
+
+/* Card Styles */
+.card {
+    background-color: #2e2a4d; /* Darker purple/black background for cards */
+    color: #e0e0e0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #60a5fa; /* Light blue for card titles */
+}
+
+/* Chart and Activity Cards */
+.chart-card, .recent-activity {
+    background-color: #2e2a4d; /* Dark background for consistency */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.chart-card:hover, .recent-activity:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.chart-card h3, .recent-activity h3 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #60a5fa; /* Light blue for headers */
+}
+
+.recent-activity ul {
+    list-style: none;
+    padding: 0;
+}
+
+.recent-activity li {
+    display: flex;
+    justify-content: space-between;
+    color: #9aa5ce; /* Lighter slate text */
+    margin-bottom: 10px;
+}
+
+.recent-activity span {
+    color: #6b728e; /* Muted time text */
+}
+
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex bg-gradient-to-br" id="page-container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-title">Patient Dashboard</div>
+            <ul class="menu-list">
+               <li class="menu-item" id="bookAppointment">Book Appointments</li>
+
+
+              
+            
+                <li class="menu-item" id="medical-history-btn">Medical History</li>
+                <li class="menu-item"  id="lab-reports-btn">Lab Reports</li>
+                
+               
+                <li class="menu-item" id="notifications-btn">Notifications & Reminders</li>
+
+             
+
+            </ul>
+            <div class="buttons-container">
+                <button class="edit-button" onclick="window.location.href='http://localhost:3000/edit-profile'">Edit</button>
+                <button class="logout-button" onclick="window.location.href='http://localhost:3000/login'">Logout</button>
+            </div>
+            
+        </div>
+
+        <div class="main-content">
+            <div class="profile-section">
+                <div class="profile-card">
+                    <img src="https://via.placeholder.com/100" alt="Profile" class="profile-img">
+                    <h2 class="profile-name">Loading...</h2>
+                    <p class="profile-id">Patient ID: Loading...</p>
+                    <div class="profile-details">
+                        <p>Age: <span id="age">Loading...</span></p>
+                        <p>Blood Group: <span id="blood-group">Loading...</span></p>
+                        <p>Height: <span id="height">Loading...</span></p>
+                        <p>Weight: <span id="weight">Loading...</span></p>
+                    </div>
+                </div>
+                <div class="stats-section">
+                    <div class="stat-card">
+                        <h3>General Health</h3>
+                        <p id="general-health">Loading...</p>
+                        <canvas id="generalHealthChart" width="400" height="400"></canvas>
+
+                    </div>
+                    <div class="stat-card">
+                        <h3>Water Balance</h3>
+                        <p id="water-balance">Loading...</p>
+                         <canvas id="waterBalanceChart" width="400" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+            {{!-- <div class="activity-health">
+                <div class="activity-card">
+                    <h3>Your Activity</h3>
+                    <p>Activity Graph Placeholder</p>
+                </div>
+                <div class="health-condition-card">
+                    <h3>Your Health Conditions</h3>
+                    <p>Health Condition Graph Placeholder</p>
+                </div>
+            </div> --}}
+            <div class="appointments-section">
+                <h3>Doctor Appointments</h3>
+                <div class="appointments-list">
+                    <!-- Appointments can be added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const notificationsButton = document.getElementById('notifications-btn');
+
+    notificationsButton.addEventListener('click', () => {
+      // Redirect to the notifications page
+      window.location.href = `/notifications`;
+    });
+  });
+</script>
+    {{!-- profile name etc..  --}}
+    <script>
+       document.addEventListener("DOMContentLoaded", () => {
+       const email = localStorage.getItem('userEmail'); // Retrieve email from local storage
+
+        if (email) {
+        fetch(`http://localhost:3000/api/user/${email}`)
+            .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+            })
+            .then(data => {
+            document.querySelector(".profile-name").textContent = data.name || 'N/A';
+            document.querySelector(".profile-id").textContent = `Patient ID: ${data.patientId || 'N/A'}`;
+            document.getElementById("age").textContent = data.age || 'N/A';
+            document.getElementById("blood-group").textContent = data.bloodGroup || 'N/A';
+            document.getElementById("height").textContent = data.height + " cm" || 'N/A';
+            document.getElementById("weight").textContent = data.weight + " kg" || 'N/A';
+            document.getElementById("general-health").textContent = `${data.generalHealth || 'N/A'}`;
+            document.getElementById("water-balance").textContent = `${data.waterBalance || 'N/A'}%`;
+            })
+            .catch(error => console.error('Error fetching user data:', error));
+        } else {
+            console.error("No email found in local storage. Redirecting to login...");
+            window.location.href = '/login';
+        }
+        });
+    </script>
+
+    {{!-- doctor appointment bottom  --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const email = localStorage.getItem('userEmail');
+
+        if (email) {
+        // Fetch appointments from the backend
+        fetch(`http://localhost:3000/api/user/${email}/appointments`)
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+      .then(appointments => {
+        const appointmentsContainer = document.querySelector('.appointments-list');
+        appointmentsContainer.innerHTML = ''; // Clear any existing appointments
+
+        appointments.forEach(appointment => {
+          const appointmentCard = document.createElement('div');
+          appointmentCard.className = 'appointment-card';
+          appointmentCard.innerHTML = `
+            <h4>Doctor: ${appointment.name}</h4>
+            <p>Date: ${new Date(appointment.appointmentDate).toLocaleDateString()}</p>
+            <p>Time: ${appointment.appointmentTime}</p>
+            <p>Notes: ${appointment.notes || 'N/A'}</p>
+          `;
+          appointmentsContainer.appendChild(appointmentCard);
+        });
+      })
+      .catch(error => console.error('Error fetching appointments:', error));
+    } else {
+        console.error("No email found in local storage. Redirecting to login...");
+        window.location.href = '/login';
+    }
+    });
+    </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js">
+</script>
+
+{{!-- top user profile --}}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const email = localStorage.getItem('userEmail'); // Retrieve email from local storage
+
+    if (email) {
+        fetch(`http://localhost:3000/api/user/${email}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update profile information in the DOM
+                document.getElementById("water-balance").textContent = `${data.waterBalance || 'N/A'}%`;
+                document.getElementById("general-health").textContent = `${data.generalHealth || 'N/A'}%`;
+
+                // Extract general health value
+                const generalHealthText = document.getElementById("general-health").textContent.replace('%', '');
+                const generalHealthValue = parseInt(generalHealthText, 10) || 0; // Default to 0 if NaN
+                
+                // Extract water balance value
+                const waterBalanceText = document.getElementById("water-balance").textContent.replace('%', '');
+                const waterBalanceValue = parseInt(waterBalanceText, 10) || 0; // Default to 0 if NaN
+
+                // Calculate remaining health
+                const remainingHealth = 100 - generalHealthValue;
+                const remainingWater = 100 - waterBalanceValue;
+
+                // Create the General Health Pie Chart
+                const ctxHealth = document.getElementById('generalHealthChart').getContext('2d');
+                const generalHealthChart = new Chart(ctxHealth, {
+                    type: 'pie',
+                    data: {
+                        labels: ['General Health', 'Remaining Health'],
+                        datasets: [{
+                            label: 'General Health',
+                            data: [generalHealthValue, remainingHealth],
+                            backgroundColor: ['#4CAF50', '#FF6384'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Create the Water Balance Pie Chart
+                const ctxWater = document.getElementById('waterBalanceChart').getContext('2d');
+                const waterBalanceChart = new Chart(ctxWater, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Water Balance', 'Remaining Water'],
+                        datasets: [{
+                            label: 'Water Balance',
+                            data: [waterBalanceValue, remainingWater],
+                            backgroundColor: ['#2196F3', '#FFB74D'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching user data:', error));
+    } else {
+        console.error("No email found in local storage. Redirecting to login...");
+        window.location.href = '/login';
+    }
+});
+
+</script>
+
+{{!-- on click to book appointment button feature --}}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+       
+        const bookAppointmentItem = document.getElementById('bookAppointment');
+        bookAppointmentItem.addEventListener('click', () => {
+            window.location.href = 'http://localhost:3000/book-appointment'; // Redirect to the booking page
+        }); 
+    });
+</script>
+
+
+  {{!-- dark mode button  --}}
+     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const darkModeSwitch = document.getElementById('dark-mode-switch');
+            const pageContainer = document.getElementById('page-container');
+            let clickCount = 0;  // Initialize a counter for clicks
+
+            // Toggle dark mode based on odd or even clicks
+            darkModeSwitch.addEventListener('click', () => {
+                clickCount++;  // Increment the counter each time the switch is clicked
+
+                if (clickCount % 2 === 1) {
+                    // Odd number of clicks: enable dark mode
+                    pageContainer.classList.add('dark-mode');
+                } else {
+                    // Even number of clicks: disable dark mode
+                    pageContainer.classList.remove('dark-mode');
+                }
+            });
+        });
+    </script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const medicalHistoryButton = document.getElementById('medical-history-btn');
+    const email = localStorage.getItem('userEmail');
+
+    // Check if email exists in localStorage
+    if (!email) {
+      console.error("No email found in local storage. Redirecting to login...");
+      window.location.href = '/login';
+      return;
+    }
+
+    // Redirect to the medical history page with email as a query parameter
+    medicalHistoryButton.addEventListener('click', () => {
+      window.location.href = `http://localhost:3000/medicalhistory?email=${encodeURIComponent(email)}`;
+    });
+  });
+</script>
+<script>
+  document.getElementById("lab-reports-btn").addEventListener("click", () => {
+    const email = localStorage.getItem('userEmail');
+    if (email) {
+      window.location.href = `http://localhost:3000/labreports?email=${encodeURIComponent(email)}`;
+    } else {
+      window.location.href = '/login';
+    }
+  });
+</script>
+</body>
+</html>

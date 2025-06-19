@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notifications & Reminders</title>
+<style>
+  /* General Dark Mode Styles for the Entire Page */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #1c1b2e; /* Dark background for the entire body */
+    color: #e0e0e0; /* Light text color for contrast */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Ensure full height */
+    display: flex;
+    flex-direction: column; /* Stack the content vertically */
+  }
+
+  /* Main container for the content to align everything properly */
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #252440; /* Slightly brighter background for the main content */
+  }
+
+  /* Centering the heading of the notifications */
+  h1 {
+    text-align: center;
+    font-size: 24px;
+    color: #b794f4; /* Light purple color */
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  /* Notification and Reminders Container */
+  #notification-container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 900px;
+    background: linear-gradient(135deg, #2a273b, #373159); /* Dark gradient background */
+    border-radius: 8px;
+    color: #e0e0e0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  }
+
+  /* Styling for each countdown item */
+  .countdown-item {
+    background: #373159; /* Matching purple-black background */
+    padding: 20px;
+    margin-bottom: 15px;
+    border-left: 5px solid #c084fc; /* Brightened purple border */
+    border-radius: 8px;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+  }
+
+  /* Hover effect for countdown item */
+  .countdown-item:hover {
+    transform: translateX(5px); /* Slight movement on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+    background: #2e2a4d; /* Slight darkening on hover */
+  }
+
+  /* Strong text styling for doctor name */
+  .countdown-item strong {
+    font-size: 18px;
+    color: #b794f4; /* Light purple color for doctor name */
+  }
+
+  /* Countdown time text (time left) */
+  .countdown-time {
+    font-size: 16px;
+    color: #c084fc; /* Brightened purple text for countdown */
+    font-weight: 600;
+  }
+
+  /* Appointment reached styling */
+  .appointment-reached {
+    font-size: 16px;
+    color: #e74c3c; /* Red text for reached appointment */
+    font-weight: 600;
+  }
+
+  /* Loading text styling when no data is available */
+  #notification-container p {
+    color: #b0b0b0; /* Lighter gray text for loading message */
+    text-align: center;
+    font-size: 16px;
+  }
+
+  /* Responsiveness: Adjusting styles for smaller screens */
+  @media screen and (max-width: 600px) {
+    #notification-container {
+      margin: 15px;
+      padding: 15px;
+    }
+
+    .countdown-item {
+      padding: 15px;
+    }
+
+    .countdown-item strong {
+      font-size: 16px;
+    }
+
+    .countdown-time {
+      font-size: 14px;
+    }
+
+    .appointment-reached {
+      font-size: 14px;
+    }
+
+    h1 {
+      font-size: 20px; /* Smaller font size on small screens */
+    }
+  }
+
+</style>
+
+
+
+
+</head>
+<body>
+  <h1>Notifications & Reminders</h1>
+  <div id="notification-container" class="countdown-container">
+    Loading reminders...
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const email = localStorage.getItem('userEmail'); // You can store the user's email in localStorage or another method
+      const notificationContainer = document.getElementById("notification-container");
+
+      // Fetch upcoming appointments
+      async function fetchAppointments() {
+         const response = await fetch(`/api/user/${email}/appointments`); // Replace this with the actual API endpoint
+        const appointments = await response.json(); 
+        displayAppointments(appointments);
+      }
+
+      // Helper function to format date to YYYY-MM-DD
+      function formatDate(date) {
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+
+      // Display each appointment with a countdown timer
+      function displayAppointments(appointments) {
+        notificationContainer.innerHTML = ""; // Clear any existing notifications
+
+        if (appointments.length === 0) {
+          notificationContainer.innerHTML = "<p>No upcoming appointments.</p>";
+          return;
+        }
+
+        appointments.forEach(appointment => {
+          // Format appointment date before using it
+          const appointmentDate = formatDate(appointment.appointmentDate);
+          const appointmentTime = appointment.appointmentTime;
+          const countdown = document.createElement("div");
+          countdown.classList.add("countdown-item");
+
+          // Parse formatted appointment date and time
+          const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
+
+          // Update the countdown timer every second
+          function updateTimer() {
+            const now = new Date();
+            const timeLeft = appointmentDateTime - now;
+
+            if (timeLeft > 0) {
+              const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+              const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+              const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+              countdown.innerHTML = `<strong>${appointment.name}</strong>  ${hours}h ${minutes}m ${seconds}s left`;
+            } else {
+              countdown.innerHTML = `<strong>${appointment.name}</strong>  Appointment Time Reached!`;
+              clearInterval(timer);
+            }
+          }
+
+          // Initialize and set an interval for each timer
+          const timer = setInterval(updateTimer, 1000);
+          notificationContainer.appendChild(countdown);
+        });
+      }
+
+      // Load appointments initially
+      fetchAppointments();
+    });
+  </script>
+</body>
+</html>

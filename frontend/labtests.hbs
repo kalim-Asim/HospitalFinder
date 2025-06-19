@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Lab Test</title>
+  <link rel="stylesheet" href="index.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.png" type="image/png">
+ <style>
+  /* File: public/css/labtest.css */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #1c1b2e; /* Dark background */
+  color: #e0e0e0; /* Light text color */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+  background-color: #252440; /* Slightly lighter dark background */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  padding: 40px;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+h2 {
+  color: #b794f4; /* Light purple heading */
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  color: #c2c2ff; /* Slightly lighter text color */
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="string"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #373159; /* Darker border */
+  border-radius: 5px;
+  background-color: #2e2a4d; /* Input field background */
+  color: #e0e0e0;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="string"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: #c084fc; /* Brighter purple border on focus */
+  outline: none;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #373159; /* Dark button background */
+  color: #e0e0e0;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button[type="submit"]:hover {
+  background-color: #4b3f72; /* Lighter purple on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+ </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Request Lab Test</h2>
+
+    <form method="POST" id="add-lab-test">
+      <div class="form-group">
+        <label for="name">Patient's Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="string" id="email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+          <option value="">Select gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="test">Select Lab Test:</label>
+        <select id="test" name="test" required>
+          <option value="">Select a test</option>
+          <option value="blood-count">Complete Blood Count (CBC)</option>
+          <option value="cholesterol">Cholesterol Panel</option>
+          <option value="blood-sugar">Blood Sugar Level</option>
+          <option value="liver">Liver Function Test (LFT)</option>
+          <option value="kidney">Kidney Function Test (KFT)</option>
+          <option value="thyroid">Thyroid Panel</option>
+          <option value="urinalysis">Urinalysis</option>
+          <option value="vitamin-d">Vitamin D Test</option>
+          <option value="electrolytes">Electrolyte Panel</option>
+          <option value="hiv">HIV Test</option>
+        </select>
+      </div>
+
+      <button type="submit">Submit Request</button>
+    </form>
+  </div>
+</body>
+
+</html>
